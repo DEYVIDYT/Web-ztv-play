@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <script>
+        // Faz um pedido GET para a URL fornecida
+        fetch("http://z-tv-playactivitycode.000.pe/txt.php")
+            .then(response => response.json())
+            .then(data => {
+                // Escolhe aleatoriamente um índice no array
+                const randomIndex = Math.floor(Math.random() * data.length);
+
+                // Extrai os dados necessários do elemento escolhido aleatoriamente
+                const url = data[randomIndex].url;
+                const port = data[randomIndex].porta;
+                const username = data[randomIndex].username;
+                const password = data[randomIndex].password;
+
+                // Verifica se a porta é nula e ajusta a URL
+                const newUrl = port !== null
+                    ? `http://${url}:${port}/get.php?username=${username}&password=${password}&type=m3u_plus`
+                    : `http://${url}/get.php?username=${username}&password=${password}&type=m3u_plus`;
+
+                // Faz um pedido GET para a nova URL e exibe o conteúdo bruto
+                fetch(newUrl)
+                    .then(response => response.text())
+                    .then(content => {
+                        // Exibe o conteúdo bruto da nova URL
+                        document.body.innerHTML = content;
+                    });
+            })
+            .catch(error => console.error('Erro:', error));
+    </script>
+</body>
+</html>
