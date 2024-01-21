@@ -1,48 +1,101 @@
-<?php
-$usersAndPasswords = [
-    [
-        "username" => "suspected-TR1-4fUzoS1YHS",
-        "password" => "FwUbaVzI6l",
-        "url" => "main.xplus2-main.xyz",
-        "port" => "2095"
-    ],
-    [
-        "username" => "xplus-2-5m2LRWhwWQ",
-        "password" => "TbrPf7Hoh7",
-        "url" => "main.xplus2-main.xyz",
-        "port" => "2095"
-    ],
-];
+<!DOCTYPE html>
+<html lang="pt-br">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Nossos Aplicativos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            margin: 20px;
+        }
 
-$selectedPairIndex = array_rand($usersAndPasswords);
-$selectedPair = $usersAndPasswords[$selectedPairIndex];
+        h1 {
+            color: #ff6f61;
+            margin-bottom: 20px;
+        }
 
-$response = [
-    "user_info" => [
-        "username" => $selectedPair["username"],
-        "password" => $selectedPair["password"],
-        "message" => "Welcome to Xtream Codes Reborn",
-        "auth" => 1,
-        "status" => "Active",
-        "exp_date" => "1989088881",
-        "is_trial" => "0",
-        "active_cons" => "2",
-        "created_at" => "1668297669",
-        "max_connections" => "4",
-        "allowed_output_formats" => ["m3u8", "ts", "rtmp"]
-    ],
-    "server_info" => [
-        "url" => $selectedPair["url"],
-        "port" => $selectedPair["port"],
-        "https_port" => "41002",
-        "server_protocol" => "http",
-        "rtmp_port" => "41003",
-        "timezone" => "Africa\/Cairo",
-        "timestamp_now" => time(),
-        "time_now" => date("Y-m-d H:i:s")
-    ]
-];
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-echo json_encode($response);
-?>
+        li {
+            margin: 15px;
+        }
+
+        a {
+            display: block;
+            padding: 15px 25px;
+            background-color: #00a1e4;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #007bb5;
+        }
+
+        .description {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .add-list-button {
+            display: block;
+            margin: 0 auto;
+            padding: 15px 25px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-list-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Baixe Nossos Aplicativos</h1>
+
+    <div class="description">
+        <ul>
+            <li><a href="https://github.com/DEYVIDYT/Z-tv-play/releases/download/Vodaapsztv/Z-TV.Play_1.1.6.apk" download>Z-TV Play</a></li>
+            <li><a href="https://github.com/DEYVIDYT/Z-tv-play/releases/download/Vodaapsztv/ZPLAY.VOD_1.2.0.apk" download>ZPlay VOD</a></li>
+        </ul>
+
+        <p><strong>Z-TV Play:</strong> Desfrute de uma ampla variedade de canais de TV ao vivo e filmes, totalmente grátis!</p>
+
+        <p><strong>ZPlay VOD:</strong> Explore uma vasta coleção de filmes para streaming, incluindo os últimos lançamentos.</p>
+    </div>
+
+    <a href="https://z-tv-apps.000webhostapp.com/index.html" class="add-list-button" target="_blank">Adicionar à Sua Lista</a>
+
+</body>
+
+</html>
