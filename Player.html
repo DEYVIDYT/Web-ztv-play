@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Reprodutor de Vídeo</title>
+
+    <style>
+        #meuVideo {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<video id="meuVideo" controls>
+    <!-- O URL do vídeo será obtido dinamicamente via JavaScript -->
+    Seu navegador não suporta o elemento de vídeo.
+</video>
+
+<script>
+    var video = document.getElementById('meuVideo');
+
+    // Obtém o parâmetro 'url' da URL
+    var urlParam = new URLSearchParams(window.location.search).get('url');
+
+    if (urlParam) {
+        // Define o src do vídeo com o URL obtido
+        video.src = urlParam;
+
+        video.addEventListener('loadedmetadata', function() {
+            console.log('Duração do Vídeo: ' + video.duration + ' segundos');
+        });
+
+        video.addEventListener('error', function() {
+            console.error('Erro ao carregar o vídeo.');
+        });
+    } else {
+        console.error('URL do vídeo não fornecido.');
+    }
+</script>
+
+</body>
+</html>
