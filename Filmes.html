@@ -1,83 +1,111 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Filmes Online</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Lista de Filmes</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        header {
             background-color: #1a1a1a;
             color: #fff;
+            text-align: center;
+            padding: 1em;
+            position: relative;
+            z-index: 2;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #search {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        #back-to-menu {
+            display: none;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        #search-input {
+            display: none;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        section {
+            padding: 20px;
             display: flex;
             flex-direction: column;
-        }
-
-        #categories {
-            width: 100%;
-            text-align: center;
-            padding: 20px;
-            background-color: #2c2c2c;
-            color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            display: flex;
-            justify-content: center;
-        }
-
-        #categories span {
-            margin: 0 15px;
-            padding: 10px;
-            background-color: #4c566a;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-            border-radius: 5px;
-        }
-
-        #categories span:hover {
-            background-color: #5e6879;
-        }
-
-        #movies {
-            width: 100%;
-            max-width: 1200px;
-            margin: 20px auto;
-            display: grid;
             gap: 20px;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            justify-content: center;
+            position: relative;
+            z-index: 1;
         }
 
         .category {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
             width: 100%;
-            margin-bottom: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #3498db;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
         }
 
-        .movies-in-category {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            justify-content: center;
+        .category h2 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .movie-list {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            overflow-x: auto;
         }
 
         .movie {
-            width: 100%;
-            background-color: #2e3440;
-            overflow: hidden;
+            max-width: 100px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease-in-out;
-            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
         }
 
         .movie:hover {
@@ -85,24 +113,178 @@
         }
 
         .movie img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px 5px 0 0;
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
 
-        .movie p {
+        .movie div {
             padding: 10px;
-            text-align: center;
-            margin: 0;
-            color: #fff;
+        }
+
+        #search-results {
+            display: none;
+            padding: 20px;
+        }
+
+        #search-results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #search-results-list .movie {
+            max-width: none;
+        }
+
+        #search-results-list .movie img {
+            border-radius: 5px 5px 0 0;
         }
     </style>
 </head>
+
 <body>
+    <header>
+        <h1>Lista de Filmes</h1>
+        <button id="search" onclick="showSearchInput()">Pesquisar Filmes</button>
+        <button id="back-to-menu" onclick="backToMenu()">Voltar ao Menu</button>
+        <input type="text" id="search-input" placeholder="Digite o nome do filme" oninput="filterMovies()">
+    </header>
 
-    <div id="categories"></div>
-    <div id="movies"></div>
+    <section id="movies-list">
+        <!-- Filmes serão carregados dinamicamente aqui -->
+    </section>
 
-    <script src="scripts.js"></script>
+    <section id="search-results">
+        <div id="search-results-list">
+            <!-- Lista de resultados de pesquisa -->
+        </div>
+    </section>
+
+    <script>
+        let originalMoviesList;
+
+        // Buscar e analisar JSON de Filmes.txt
+        fetch('https://raw.githubusercontent.com/DEYVIDYT/Z-tv-play/main/Filmes.txt')
+            .then(response => response.json())
+            .then(data => {
+                originalMoviesList = data;
+                displayMovies(originalMoviesList);
+            })
+            .catch(error => console.error('Error fetching Filmes.txt:', error));
+
+        // Exibir filmes na página
+        function displayMovies(categories) {
+            const moviesList = document.getElementById('movies-list');
+
+            categories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                categoryDiv.innerHTML = `
+                    <h2>${category.category_name}</h2>
+                    <div class="movie-list"></div>
+                `;
+
+                const movieListDiv = categoryDiv.querySelector('.movie-list');
+
+                // Limitar a exibição a 40 filmes por categoria
+                const limitedMovies = category.movies.slice(0, 40);
+
+                limitedMovies.forEach(movie => {
+                    const movieDiv = document.createElement('div');
+                    movieDiv.className = 'movie';
+                    movieDiv.innerHTML = `
+                        <img src="${movie.stream_icon}" alt="${movie.name}" onclick="redirectToStream('${movie.stream_id}', '${movie.container_extension}')">
+                        <div>
+                            <h3>${movie.name}</h3>
+                            <p>Rating: ${movie.rating}</p>
+                        </div>
+                    `;
+                    movieListDiv.appendChild(movieDiv);
+                });
+
+                moviesList.appendChild(categoryDiv);
+            });
+        }
+
+        // Função para redirecionar para o link do filme
+        function redirectToStream(streamId, containerExtension) {
+            const redirectLink = `http://zeusplay.life:80/movie/Meuloguin190/Loguinhodeuso/${streamId}.${containerExtension}`;
+            window.location.href = redirectLink;
+        }
+
+        // Função para filtrar filmes com base na pesquisa
+        function filterMovies() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+
+            // Filtrar filmes globalmente em todas as categorias
+            const filteredMovies = originalMoviesList.flatMap(category =>
+                category.movies.filter(movie => movie.name.toLowerCase().includes(input))
+            ).slice(0, 80); // Limitar a 80 filmes
+
+            displaySearchResults(filteredMovies);
+            showSearchResultsPage();
+        }
+
+        // Exibir resultados de pesquisa
+        function displaySearchResults(results) {
+            const searchResultsList = document.getElementById('search-results-list');
+            searchResultsList.innerHTML = '';
+
+            results.forEach(movie => {
+                const movieDiv = document.createElement('div');
+                movieDiv.className = 'movie';
+                movieDiv.innerHTML = `
+                    <img src="${movie.stream_icon}" alt="${movie.name}" onclick="redirectToStream('${movie.stream_id}', '${movie.container_extension}')">
+                    <div>
+                        <h3>${movie.name}</h3>
+                        <p>Rating: ${movie.rating}</p>
+                    </div>
+                `;
+                searchResultsList.appendChild(movieDiv);
+            });
+        }
+
+        // Mostrar a página de resultados de pesquisa
+        function showSearchResultsPage() {
+            const searchResultsPage = document.getElementById('search-results');
+            const moviesList = document.getElementById('movies-list');
+            const backToMenuButton = document.getElementById('back-to-menu');
+
+            moviesList.style.display = 'none';
+            searchResultsPage.style.display = 'flex';
+            backToMenuButton.style.display = 'block';
+        }
+
+        // Mostrar a página de pesquisa
+        function showSearchInput() {
+            const searchResultsPage = document.getElementById('search-results');
+            const moviesList = document.getElementById('movies-list');
+            const backToMenuButton = document.getElementById('back-to-menu');
+
+            searchResultsPage.style.display = 'none';
+            moviesList.style.display = 'flex';
+            backToMenuButton.style.display = 'none';
+            document.getElementById('search-input').style.display = 'block';
+            document.getElementById('search').style.display = 'none';
+        }
+
+        // Voltar ao menu inicial
+        function backToMenu() {
+            const searchResultsPage = document.getElementById('search-results');
+            const moviesList = document.getElementById('movies-list');
+            const backToMenuButton = document.getElementById('back-to-menu');
+
+            searchResultsPage.style.display = 'none';
+            moviesList.style.display = 'flex';
+            backToMenuButton.style.display = 'none';
+            document.getElementById('search-input').style.display = 'none';
+            document.getElementById('search').style.display = 'block';
+            document.getElementById('search-input').value = '';
+        }
+    </script>
 </body>
+
 </html>
