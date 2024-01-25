@@ -165,21 +165,31 @@
 
     <script>
         let originalMoviesList;
+        let loadedMovies = 0;
+        const moviesToLoad = 20; // Quantidade inicial de filmes a carregar
 
-        // Buscar e analisar JSON de Filmes.txt
-        fetch('https://raw.githubusercontent.com/DEYVIDYT/Z-tv-play/main/Filmes.txt')
-            .then(response => response.json())
-            .then(data => {
-                originalMoviesList = data;
-                displayMovies(originalMoviesList);
-            })
-            .catch(error => console.error('Error fetching Filmes.txt:', error));
+        // Buscar e analisar JSON de Filmes.txt após o carregamento da página
+        window.onload = function () {
+            fetchMovies();
+        };
 
-        // Exibir filmes na página
-        function displayMovies(categories) {
+        // Função para buscar e carregar filmes
+        function fetchMovies() {
+            fetch('https://raw.githubusercontent.com/DEYVIDYT/Z-tv-play/main/Filmes.txt')
+                .then(response => response.json())
+                .then(data => {
+                    originalMoviesList = data;
+                    loadMovies();
+                })
+                .catch(error => console.error('Error fetching Filmes.txt:', error));
+        }
+
+        // Função para carregar filmes dinamicamente
+        function loadMovies() {
             const moviesList = document.getElementById('movies-list');
+            let moviesToDisplay = originalMoviesList.slice(loadedMovies, loadedMovies + moviesToLoad);
 
-            categories.forEach(category => {
+            moviesToDisplay.forEach(category => {
                 const categoryDiv = document.createElement('div');
                 categoryDiv.className = 'category';
                 categoryDiv.innerHTML = `
@@ -189,14 +199,11 @@
 
                 const movieListDiv = categoryDiv.querySelector('.movie-list');
 
-                // Limitar a exibição a 40 filmes por categoria
-                const limitedMovies = category.movies.slice(0, 40);
-
-                limitedMovies.forEach(movie => {
+                category.movies.forEach(movie => {
                     const movieDiv = document.createElement('div');
                     movieDiv.className = 'movie';
                     movieDiv.innerHTML = `
-                        <img src="${movie.stream_icon}" alt="${movie.name}" onclick="redirectToStream('${movie.stream_id}', '${movie.container_extension}')">
+                        <img data-src="${movie.stream_icon}" alt="${movie.name}" onclick="redirectToStream('${movie.stream_id}', '${movie.container_extension}')">
                         <div>
                             <h3>${movie.name}</h3>
                             <p>Rating: ${movie.rating}</p>
@@ -206,6 +213,20 @@
                 });
 
                 moviesList.appendChild(categoryDiv);
+            });
+
+            // Marcar as imagens para pré-carregamento
+            markImagesForLazyLoad();
+
+            // Iniciar a observação de interseção para carregamento preguiçoso
+            observeLazyLoad();
+        }
+
+        // Marcar as imagens para pré-carregamento
+        function markImagesForLazyLoad() {
+            const images = document.querySelectorAll('img[data-src]');
+            images.forEach(img => {
+                img.src = img.dataset.src;
             });
         }
 
@@ -218,11 +239,15 @@
         // Função para filtrar filmes com base na pesquisa
         function filterMovies() {
             const input = document.getElementById('search-input').value.toLowerCase();
-
-            // Filtrar filmes globalmente em todas as categorias
-            const filteredMovies = originalMoviesList.flatMap(category =>
-                category.movies.filter(movie => movie.name.toLowerCase().includes(input))
-            ).slice(0, 80); // Limitar a 80 filmes
+            const filteredMovies = originalMoviesList
+                .filter(category => category.movies.some(movie => movie.name.toLowerCase().includes(input)))
+                .map(category => {
+                    return {
+                        category_name: category.category_name,
+                        movies: category.movies.filter(movie => movie.name.toLowerCase().includes(input))
+                    };
+                })
+                .filter(category => category.movies.length > 0);
 
             displaySearchResults(filteredMovies);
             showSearchResultsPage();
@@ -233,18 +258,34 @@
             const searchResultsList = document.getElementById('search-results-list');
             searchResultsList.innerHTML = '';
 
-            results.forEach(movie => {
-                const movieDiv = document.createElement('div');
-                movieDiv.className = 'movie';
-                movieDiv.innerHTML = `
-                    <img src="${movie.stream_icon}" alt="${movie.name}" onclick="redirectToStream('${movie.stream_id}', '${movie.container_extension}')">
-                    <div>
-                        <h3>${movie.name}</h3>
-                        <p>Rating: ${movie.rating}</p>
-                    </div>
+            results.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                categoryDiv.innerHTML = `
+                    <h2>${category.category_name}</h2>
+                    <div class="movie-list"></div>
                 `;
-                searchResultsList.appendChild(movieDiv);
+
+                const movieListDiv = categoryDiv.querySelector('.movie-list');
+
+                category.movies.forEach(movie => {
+                    const movieDiv = document.createElement('div');
+                    movieDiv.className = 'movie';
+                    movieDiv.innerHTML = `
+                        <img data-src="${movie.stream_icon}" alt="${movie.name}" onclick="redirectToStream('${movie.stream_id}', '${movie.container_extension}')">
+                        <div>
+                            <h3>${movie.name}</h3>
+                            <p>Rating: ${movie.rating}</p>
+                        </div>
+                    `;
+                    movieListDiv.appendChild(movieDiv);
+                });
+
+                searchResultsList.appendChild(categoryDiv);
             });
+
+            markImagesForLazyLoad(); // Marcar as imagens para pré-carregamento
+            observeLazyLoad(); // Iniciar a observação de interseção para carregamento preguiçoso
         }
 
         // Mostrar a página de resultados de pesquisa
@@ -283,6 +324,26 @@
             document.getElementById('search-input').style.display = 'none';
             document.getElementById('search').style.display = 'block';
             document.getElementById('search-input').value = '';
+        }
+
+        // Função para observar o carregamento preguiçoso
+        function observeLazyLoad() {
+            const images = document.querySelectorAll('img[data-src]');
+            const config = { rootMargin: '0px 0px 50px 0px', threshold: 0.1 };
+
+            const intersectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const lazyImage = entry.target;
+                        lazyImage.src = lazyImage.dataset.src;
+                        observer.unobserve(lazyImage);
+                    }
+                });
+            }, config);
+
+            images.forEach(image => {
+                intersectionObserver.observe(image);
+            });
         }
     </script>
 </body>
