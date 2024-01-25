@@ -166,14 +166,12 @@
     <script>
         let originalMoviesList;
         let loadedMovies = 0;
-        const moviesToLoad = 20; // Quantidade inicial de filmes a carregar
+        const moviesToLoad = 20;
 
-        // Buscar e analisar JSON de Filmes.txt após o carregamento da página
         window.onload = function () {
             fetchMovies();
         };
 
-        // Função para buscar e carregar filmes
         function fetchMovies() {
             fetch('https://raw.githubusercontent.com/DEYVIDYT/Z-tv-play/main/Filmes.txt')
                 .then(response => response.json())
@@ -184,7 +182,6 @@
                 .catch(error => console.error('Error fetching Filmes.txt:', error));
         }
 
-        // Função para carregar filmes dinamicamente
         function loadMovies() {
             const moviesList = document.getElementById('movies-list');
             let moviesToDisplay = originalMoviesList.slice(loadedMovies, loadedMovies + moviesToLoad);
@@ -215,14 +212,10 @@
                 moviesList.appendChild(categoryDiv);
             });
 
-            // Marcar as imagens para pré-carregamento
             markImagesForLazyLoad();
-
-            // Iniciar a observação de interseção para carregamento preguiçoso
             observeLazyLoad();
         }
 
-        // Marcar as imagens para pré-carregamento
         function markImagesForLazyLoad() {
             const images = document.querySelectorAll('img[data-src]');
             images.forEach(img => {
@@ -230,13 +223,11 @@
             });
         }
 
-        // Função para redirecionar para o link do filme
         function redirectToStream(streamId, containerExtension) {
             const redirectLink = `http://zeusplay.life:80/movie/Meuloguin190/Loguinhodeuso/${streamId}.${containerExtension}`;
             window.location.href = redirectLink;
         }
 
-        // Função para filtrar filmes com base na pesquisa
         function filterMovies() {
             const input = document.getElementById('search-input').value.toLowerCase();
             const filteredMovies = originalMoviesList
@@ -253,7 +244,6 @@
             showSearchResultsPage();
         }
 
-        // Exibir resultados de pesquisa
         function displaySearchResults(results) {
             const searchResultsList = document.getElementById('search-results-list');
             searchResultsList.innerHTML = '';
@@ -284,11 +274,10 @@
                 searchResultsList.appendChild(categoryDiv);
             });
 
-            markImagesForLazyLoad(); // Marcar as imagens para pré-carregamento
-            observeLazyLoad(); // Iniciar a observação de interseção para carregamento preguiçoso
+            markImagesForLazyLoad();
+            observeLazyLoad();
         }
 
-        // Mostrar a página de resultados de pesquisa
         function showSearchResultsPage() {
             const searchResultsPage = document.getElementById('search-results');
             const moviesList = document.getElementById('movies-list');
@@ -299,7 +288,6 @@
             backToMenuButton.style.display = 'block';
         }
 
-        // Mostrar a página de pesquisa
         function showSearchInput() {
             const searchResultsPage = document.getElementById('search-results');
             const moviesList = document.getElementById('movies-list');
@@ -312,7 +300,6 @@
             document.getElementById('search').style.display = 'none';
         }
 
-        // Voltar ao menu inicial
         function backToMenu() {
             const searchResultsPage = document.getElementById('search-results');
             const moviesList = document.getElementById('movies-list');
@@ -326,7 +313,6 @@
             document.getElementById('search-input').value = '';
         }
 
-        // Função para observar o carregamento preguiçoso
         function observeLazyLoad() {
             const images = document.querySelectorAll('img[data-src]');
             const config = { rootMargin: '0px 0px 50px 0px', threshold: 0.1 };
