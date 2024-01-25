@@ -31,6 +31,7 @@
 
         video.addEventListener('loadedmetadata', function() {
             console.log('Duração do Vídeo: ' + video.duration + ' segundos');
+            video.play(); // Inicia a reprodução do vídeo após carregamento
         });
 
         video.addEventListener('error', function() {
