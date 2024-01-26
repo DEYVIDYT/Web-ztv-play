@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Listas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+        }
+
+        h2 {
+            color: #ff7f50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555555;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #ff7f50;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #ff6347;
+        }
+
+        /* Estilo para a mensagem */
+        #message-container {
+            margin-top: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        #success-message {
+            background-color: #32cd32;
+            color: #ffffff;
+        }
+
+        #error-message {
+            background-color: #ff4500;
+            color: #ffffff;
+        }
+
+        /* Estilo para o total de visitas */
+        #total-visits-container {
+            margin-top: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="processar_listas.php" method="post">
+        <h2>Adicionar Listas</h2>
+        <label for="urls">URLs (uma por linha):</label>
+        <textarea id="urls" name="urls" rows="4" cols="50" required></textarea><br>
+        <button type="submit">Adicionar Listas</button>
+
+        <!-- Container para a mensagem -->
+        <div id="message-container"></div>
+
+        <!-- Container para exibir o total de visitas -->
+        <div id="total-visits-container"></div>
+    </form>
+
+    <!-- Script JavaScript para exibir mensagem e total de visitas -->
+    <script>
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        function showMessage(message, messageType) {
+            var messageContainer = document.getElementById('message-container');
+            messageContainer.innerHTML = message;
+            messageContainer.style.display = 'block';
+            messageContainer.style.backgroundColor = messageType === 'success' ? '#32cd32' : '#ff4500';
+
+            setTimeout(function () {
+                messageContainer.style.display = 'none';
+            }, 5000); // Oculta a mensagem após 5 segundos
+        }
+
+        window.onload = function () {
+            var message = getParameterByName('message');
+            var messageType = getParameterByName('messageType');
+
+            if (message !== null && messageType !== null) {
+                showMessage(message, messageType);
+            }
+
+            // Nova função para buscar e exibir o total de visitas
+            function getTotalVisitas() {
+                fetch('contador.php') // Substitua pelo caminho real do seu arquivo PHP
+                    .then(response => response.json())
+                    .then(data => {
+                        var totalVisitas = data.totalVisitas;
+
+                        // Exibe o total de visitas no container dedicado
+                        var totalVisitasContainer = document.getElementById('total-visits-container');
+                        totalVisitasContainer.innerHTML = '<p>Total de visitas: ' + totalVisitas + '</p>';
+                    })
+                    .catch(error => console.error('Erro ao buscar total de visitas:', error));
+            }
+
+            // Chama a nova função ao carregar a página
+            getTotalVisitas();
+        };
+    </script>
+</body>
+
+</html>
