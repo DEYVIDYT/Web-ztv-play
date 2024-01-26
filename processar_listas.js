@@ -1,8 +1,20 @@
-// script.js (ou o nome que preferir)
+// script.js
+
+// Configurar o Firebase
+firebase.initializeApp({
+  apiKey: 'AIzaSyANbr5y-72LfWpMvHEdT9wf_ycmyMmaDvE',
+  authDomain: 'z-tv-play.firebaseapp.com',
+  databaseURL: 'https://z-tv-play-default-rtdb.firebaseio.com',
+  projectId: 'z-tv-play',
+  storageBucket: 'z-tv-play.appspot.com',
+  appId: '1:517303830208:web:51a3279d8145cafdbd4f25'
+});
+
+var db = firebase.database().ref('LiveDB');
 
 function processarListas() {
     var urls = document.getElementById('urls').value.split('\n');
-    var newLists = [];
+    var newLists = {};
 
     urls.forEach(function (url) {
         if (/^https?:\/\/[^\?]+\?username=.+&password=.+$/.test(url)) {
@@ -23,10 +35,15 @@ function processarListas() {
         }
     });
 
-    // Atualizar a mensagem, armazenar os dados ou fazer outras operações necessárias
+    // Adicionar dados ao Realtime Database
+    adicionarDadosAoRealtimeDB(newLists);
+
     showMessage("Obrigado por apoiar o aplicativo Z-TV Play!", "success");
-    // Pode ser necessário enviar os dados para o servidor aqui
-    // Exemplo: enviarDadosParaServidor(newLists);
+    getTotalVisitas();
+}
+
+function adicionarDadosAoRealtimeDB(newLists) {
+    db.push().set(newLists);
 }
 
 function showMessage(message, messageType) {
@@ -44,3 +61,5 @@ function getTotalVisitas() {
     // Lógica para buscar e exibir o total de visitas em JavaScript
     // Similar à sua implementação original
 }
+
+// Restante do código permanece o mesmo
