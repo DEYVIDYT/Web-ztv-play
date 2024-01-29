@@ -11,7 +11,14 @@
             background-color: #f4f4f4;
             color: #444;
             text-align: center;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         h1 {
@@ -22,6 +29,7 @@
         ul {
             list-style-type: none;
             padding: 0;
+            margin-bottom: 30px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,7 +37,7 @@
         }
 
         li {
-            margin: 15px;
+            margin: 10px;
         }
 
         a {
@@ -47,8 +55,6 @@
         }
 
         .description {
-            max-width: 800px;
-            margin: 0 auto;
             background-color: #fff;
             padding: 30px;
             border-radius: 10px;
@@ -63,8 +69,7 @@
         }
 
         .add-list-button {
-            display: block;
-            margin: 0 auto;
+            display: inline-block;
             padding: 15px 25px;
             background-color: #4caf50;
             color: #fff;
@@ -81,20 +86,23 @@
 
 <body>
 
-    <h1>Baixe Nossos Aplicativos</h1>
+    <div class="container">
+        <h1>Baixe Nossos Aplicativos</h1>
 
-    <div class="description">
-        <ul>
-            <li><a href="https://github.com/DEYVIDYT/Z-tv-play/releases/download/Vodaapsztv/Z-TV.Play_1.1.6.apk" download tabindex="1">Z-TV Play</a></li>
-            <li><a href="https://github.com/DEYVIDYT/Z-tv-play/releases/download/Vodaapsztv/ZPLAY.VOD_1.2.0.apk" download tabindex="2">ZPlay VOD</a></li>
-        </ul>
+        <div class="description">
+            <ul>
+                <li><a href="https://github.com/DEYVIDYT/Z-tv-play/releases/download/Vodaapsztv/Z-TV.Play_1.1.6.apk" download tabindex="1">Z-TV Play</a></li>
+                <li><a href="https://github.com/DEYVIDYT/Z-tv-play/releases/download/Vodaapsztv/ZPLAY.VOD_1.2.0.apk" download tabindex="2">ZPlay VOD</a></li>
+                <li><a href="https://github.com/DEYVIDYT/Z-tv-play/releases/download/Vodaapsztv/ZPLAY.VOD.MOBILE_3.0.0.apk" download tabindex="3">Zplay Vod MOBILE</a></li>
+            </ul>
 
-        <p><strong>Z-TV Play:</strong> Desfrute de uma ampla variedade de canais de TV ao vivo e filmes, totalmente grátis!</p>
+            <p><strong>Z-TV Play:</strong> Desfrute de uma ampla variedade de canais de TV ao vivo e filmes, totalmente grátis!</p>
 
-        <p><strong>ZPlay VOD:</strong> Explore uma vasta coleção de filmes para streaming, incluindo os últimos lançamentos.</p>
+            <p><strong>ZPlay VOD:</strong> Explore uma vasta coleção de filmes para streaming, incluindo os últimos lançamentos.</p>
+        </div>
+
+        <a href="http://ztv-play.x10.bz/index.html" class="add-list-button" target="_blank" tabindex="4">Adicionar à Sua Lista</a>
     </div>
-
-    <a href="https://z-tv-apps.000webhostapp.com/index.html" class="add-list-button" target="_blank" tabindex="3">Adicionar à Sua Lista</a>
 
 </body>
 
