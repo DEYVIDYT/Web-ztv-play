@@ -4,16 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecionamento</title>
+    <style>
+        body {
+            background-color: #f0f0f0; /* Cor de fundo cinza claro */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff; /* Cor de fundo branca */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        p {
+            color: #333; /* Cor do texto preto */
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        #countdown {
+            font-size: 24px;
+            color: #007bff; /* Cor do contador azul */
+            font-weight: bold;
+        }
+        
+        a {
+            color: #007bff; /* Cor do link azul */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Sublinhado quando o mouse passa por cima */
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecionando para o site....</p>
-
-    <!-- Script JavaScript para redirecionamento -->
-    <script>
-        // Redireciona após um curto intervalo de tempo (por exemplo, 3 segundos)
-        setTimeout(function() {
-            window.location.href = 'http://ztv-play.x10.bz/index.html'; // Substitua com o URL desejado
-        }, 2000); // Tempo em milissegundos (3 segundos no exemplo)
-    </script>
+    <div class="container">
+        <p>Redirecionando para o site em:</p>
+        <div id="countdown">3</div>
+        <!-- Script JavaScript para redirecionamento -->
+        <script>
+            var count = 3;
+            var countdownElement = document.getElementById("countdown");
+            var countdownInterval = setInterval(function() {
+                count--;
+                countdownElement.textContent = count;
+                if (count <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = 'http://ztv-play.x10.bz/index.html';
+                }
+            }, 1000); // Contagem regressiva em milissegundos (1 segundo)
+        </script>
+        <p>Caso não seja redirecionado automaticamente, clique <a href="http://ztv-play.x10.bz/index.html">aqui</a>.</p>
+    </div>
 </body>
 </html>
