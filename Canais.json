@@ -1,0 +1,52 @@
+[
+  {
+    "name": "1 TV Brasil",
+    "category": "Pública",
+    "url": "https://tvbrasil-stream.ebc.com.br/mux_video_ts/index-1.m3u8"
+  },
+  {
+    "name": "Rede TV",
+    "category": "Aberta",
+    "url": "https://59f1cbe63db89.streamlock.net:1443/redetv/_definst_/redetv/playlist.m3u8"
+  },
+  {
+    "name": "TV Cultura",
+    "category": "Pública",
+    "url": "https://5b33b873179a2.streamlock.net:1443/live/livestream/playlist.m3u8"
+  },
+  {
+    "name": "Record News",
+    "category": "Notícias",
+    "url": "https://playplusnews-lh.akamaihd.net/i/pp_nws@377849/master.m3u8"
+  },
+  {
+    "name": "Rede Brasil",
+    "category": "Aberta",
+    "url": "https://59f2354c05961.streamlock.net:1443/rbtv/_definst_/rbtv/playlist.m3u8"
+  },
+  {
+    "name": "TV Diário",
+    "category": "Regional",
+    "url": "https://stream-01.nyc.dailymotion.com/sec(IbeXB-fEZXft8Mu82uFOZQYVUQjTnv--5ufx77BYaX8)/dm/3/x7txn7q/s/live-2.m3u8"
+  },
+  {
+    "name": "TV Gazeta",
+    "category": "Aberta",
+    "url": "https://api.new.livestream.com/accounts/5381476/events/8947634/live.m3u8"
+  },
+  {
+    "name": "Canal Saúde",
+    "category": "Saúde",
+    "url": "https://arkyvbre1g.zoeweb.tv/fiocruz/fiocruz/playlist.m3u8"
+  },
+  {
+    "name": "TV Câmara",
+    "category": "Pública",
+    "url": "https://stream3.camara.gov.br/tv1/manifest.m3u8"
+  },
+  {
+    "name": "TV Senado",
+    "category": "Pública",
+    "url": "https://www12.senado.leg.br/tv/plenario-1-1080p/playlist.m3u8"
+  }
+]
